@@ -1,56 +1,35 @@
-import { turnRight, turnLeft } from "./directions";
+import { Coordinates } from "./coordinates";
+import { Grid } from "./grid";
 
 export class MarsRover {
-  private xPosition: number;
-  private yPosition: number;
+  private coordinate: Coordinates;
   private direction: string;
-  private xBoundary: number;
-  private yBoundary: number;
+  private grid: Grid;
 
   constructor(
-    xPosition: number = 0,
-    yPosition: number = 0,
+    coordinates: Coordinates = new Coordinates(0, 0),
     direction: string = "N"
   ) {
-    this.xPosition = xPosition;
-    this.yPosition = yPosition;
+    this.coordinate = coordinates;
     this.direction = direction;
-    this.xBoundary = 9;
-    this.yBoundary = 9;
-  }
-
-  private movement() {
-    if (this.direction === "N") {
-      this.yPosition =
-        this.yPosition + 1 > this.yBoundary ? 0 : (this.yPosition += 1);
-    } else if (this.direction === "E") {
-      this.xPosition + 1 > this.xBoundary ? 0 : (this.xPosition += 1);
-    } else if (this.direction === "S") {
-      this.yPosition =
-        this.yPosition - 1 < 0 ? this.yBoundary : (this.yPosition -= 1);
-    } else if (this.direction === "W") {
-      this.xPosition =
-        this.xPosition - 1 < 0 ? this.xBoundary : (this.xPosition -= 1);
-    }
-
-    if (this.xPosition > this.xBoundary) {
-      this.xPosition = 0;
-    }
+    this.grid = new Grid();
   }
 
   public command(givenCommand: string): void {
     givenCommand.split("").forEach((command) => {
       if (command === "R") {
-        this.direction = turnRight(this.direction);
+        this.direction = this.grid.turnRight(this.direction);
       } else if (command === "L") {
-        this.direction = turnLeft(this.direction);
+        this.direction = this.grid.turnLeft(this.direction);
       } else if (command === "M") {
-        this.movement();
+        this.coordinate = this.grid.move(this.coordinate, this.direction);
       }
     });
   }
 
   public currentPosition(): string {
-    return `${this.xPosition}:${this.yPosition}:${this.direction}`;
+    return `${this.coordinate.getXCoordinate()}:${this.coordinate.getYCoordinate()}:${
+      this.direction
+    }`;
   }
 }
