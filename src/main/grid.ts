@@ -9,7 +9,7 @@ export class Grid {
   public move(coordinate: Coordinates, direction: string) {
     let xPosition = coordinate.getXCoordinate();
     let yPosition = coordinate.getYCoordinate();
-    if (direction === "N") {
+    if (direction === "N") { // Connascence of Algorithm
       yPosition = yPosition + 1 === yBoundary ? 0 : (yPosition += 1);
     } else if (direction === "E") {
       xPosition = xPosition + 1 === xBoundary ? 0 : (xPosition += 1);
